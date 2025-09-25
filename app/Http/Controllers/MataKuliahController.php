@@ -36,7 +36,7 @@ class MataKuliahController extends Controller
     public function show(string $param1='')
     {
         if($param1 == 'st455'){
-        return view('halaman-mk-ST455');
+        return view('halaman-mk-ST455 enene');
         }else {
         return view('halaman-404');}
         //
