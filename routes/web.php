@@ -37,7 +37,7 @@ use App\Http\Controllers\AuthController;
 
 // Route::get('/matakuliah/{param1?}', [MataKuliahController::class, 'show']);
 
- Route::get('/home', [HomeController::class, 'index']);
+ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::post('question/store', [QuestionController::class, 'store'])
 		->name('question.store');

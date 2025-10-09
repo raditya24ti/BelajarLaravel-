@@ -7,6 +7,10 @@
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
+	<link rel="stylesheet" href="{{ asset('assets/css/custom-style.css') }}">
+
+
+
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -46,8 +50,8 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="#">My App</a>
+        <div class="container ">
+           <img src="{{ asset('assets/images/letter.png') }}" alt="letter" class="letter"
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -85,7 +89,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">About Our Application</h5>
+                        <h5 class="card-title font-custom">About Our Application</h5>
                         <p class="card-text">Our application provides a clean and intuitive interface, allowing users to navigate easily and perform tasks efficiently. Built with Laravel and Bootstrap, it offers flexibility and responsiveness.</p>
                         <a href="#" class="btn btn-primary">Explore More</a>
                     </div>
@@ -109,6 +113,11 @@
                     <li>{{$error}}</li>
                 @endforeach
             </ul>
+        @endif
+        @if (session('info'))
+    <div class="alert alert-info">
+        {!! session('info') !!}
+    </div>
         @endif
         </div>
         <form action="{{ route('question.store') }}" method="POST">

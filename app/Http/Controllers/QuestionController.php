@@ -41,7 +41,10 @@ class QuestionController extends Controller
             'email.email'=> 'email tidak valid'
         ];
 
-       return view('home-question-respon',$data);
+    //    return view('home-question-respon',$data);
+    // return redirect()->away('https://pranx.com/maze/ ');
+    return redirect()->route('home')->with('info', 'Pertanyaan kamu sudah disimpan');
+
     }
 
     /**
