@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashBoardController;
 
 
  Route::get('/', function () {
@@ -46,4 +47,6 @@ Route::post('question/store', [QuestionController::class, 'store'])
 
 Route::get('/auth', [AuthController::class, 'index']);
 Route::post('/auth/login', [AuthController::class, 'login']);
+
+Route::get('dashboard', [DashBoardController::class, 'index'])->name('dashboard');
 

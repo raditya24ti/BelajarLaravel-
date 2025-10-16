@@ -50,7 +50,7 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container ">
+        <div class="container font-custom">
            <img src="{{ asset('assets/images/letter.png') }}" alt="letter" class="letter"
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -89,7 +89,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title font-custom">About Our Application</h5>
+                        <h5 class="card-title">About Our Application</h5>
                         <p class="card-text">Our application provides a clean and intuitive interface, allowing users to navigate easily and perform tasks efficiently. Built with Laravel and Bootstrap, it offers flexibility and responsiveness.</p>
                         <a href="#" class="btn btn-primary">Explore More</a>
                     </div>
