@@ -20,8 +20,8 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="theme-color" content="#ffffff">
 
-    <!-- CSS -->
-   @include('admin.layout.css')
+    {{-- CSS --}}
+    @include('admin.layout.css')
 
 </head>
 
@@ -39,25 +39,21 @@
             </button>
         </div>
     </nav>
-    {{--sidebar--}}
+
+    {{-- Sidebar --}}
     @include('admin.layout.sidebar')
 
-
     <main class="content">
-        {{--header--}}
+        {{-- Header --}}
         @include('admin.layout.header')
 
-
-        {{--content--}}
+        {{-- Content --}}
         @yield('content')
 
-  {{--footer--}}
-    @include('admin.layout.footer')
-    {{--js--}}
-    @include('admin.layout.js')
-
-    <!-- Volt JS -->
-    <script src="{{ asset('assets-admin/js/volt.js') }}"></script>
+        {{-- Footer --}}
+        @include('admin.layout.footer')
+        {{-- JS --}}
+        @include('admin.layout.js')
 </body>
 
 </html>
