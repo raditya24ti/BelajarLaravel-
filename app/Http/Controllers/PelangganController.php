@@ -64,7 +64,7 @@ class PelangganController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        
+
         $data['first_name'] = $request->first_name;
         $data['last_name']  = $request->last_name;
         $data['birthday']   = $request->birthday;
@@ -78,7 +78,9 @@ class PelangganController extends Controller
             ->with('success', 'Perubahan Data Berhasil!');
     }
 
-
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(string $id)
     {
     //  dd('masuk destroy', $id);
@@ -87,3 +89,28 @@ class PelangganController extends Controller
     return redirect()->route('pelanggan.index')->with('success', 'Data berhasil dihapus');
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

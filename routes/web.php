@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
 Route::get('/', function () {
     return 'Selamat Datang di Website Kampus PCR!';
 
@@ -67,3 +68,4 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 Route::resource('pelanggan', PelangganController::class);
 Route::get('/pelanggan', [PelangganController::class, 'index'])->name('pelanggan.index');
 
+Route::resource('user', UserController::class);
