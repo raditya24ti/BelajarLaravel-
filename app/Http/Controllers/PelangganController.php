@@ -64,9 +64,6 @@ class PelangganController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        
-
-        
         $data['first_name'] = $request->first_name;
         $data['last_name']  = $request->last_name;
         $data['birthday']   = $request->birthday;
@@ -89,4 +86,4 @@ class PelangganController extends Controller
     $pelanggan->delete();
     return redirect()->route('pelanggan.index')->with('success', 'Data berhasil dihapus');
     }
-}
+
