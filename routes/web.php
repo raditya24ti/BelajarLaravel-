@@ -8,7 +8,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\DashboardController;
+
 Route::get('/', function () {
+    return view('welcome');
+    });
+
+Route::get('/ada', function () {
     return 'Selamat Datang di Website Kampus PCR!';
 
 });
