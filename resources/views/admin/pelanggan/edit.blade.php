@@ -1,15 +1,7 @@
-@extends('admin.template')
+@extends('admin.Layout.app')
 @section('title', 'Edit Pelanggan')
-
 @section('content')
     <div class="py-4">
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
         <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
             <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
                 <li class="breadcrumb-item">
@@ -22,91 +14,86 @@
                         </svg>
                     </a>
                 </li>
-                <li class="breadcrumb-item"><a href="{{ route('pelanggan.index') }}">Pelanggan</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                <li class="breadcrumb-item"><a href="#">Pelanggan</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit Pelanggan</li>
             </ol>
         </nav>
-
         <div class="d-flex justify-content-between w-100 flex-wrap">
             <div class="mb-3 mb-lg-0">
-                <h1 class="h4">Edit Data Pelanggan</h1>
-                <p class="mb-0">Ubah informasi pelanggan berikut</p>
+                <h1 class="h4">Edit Pelanggan</h1>
+                <p class="mb-0">Form untuk memperbaharui data pelanggan.</p>
             </div>
             <div>
-                <a href="{{ route('pelanggan.index') }}" class="btn btn-primary text-white">
-                    <i class="fas fa-arrow-left me-1"></i> Kembali
-                </a>
+                <a href="#" class="btn btn-primary"><i class="far fa-question-circle me-1"></i> Kembali</a>
             </div>
         </div>
     </div>
 
     <div class="row">
         <div class="col-12 mb-4">
-            <div class="card border-0 shadow mb-4">
+            <div class="card border-0 shadow components-section">
                 <div class="card-body">
-                    <form action="{{ route('pelanggan.update', $dataPelanggan->pelanggan_id) }}" method="POST">
+                    <form action={{ route('pelanggan.update', $dataPelanggan->pelanggan_id) }} method="POST">
                         @csrf
                         @method('PUT')
-
                         <div class="row mb-4">
                             <div class="col-lg-4 col-sm-6">
+                                <!-- First Name -->
                                 <div class="mb-3">
-                                    <label for="first_name" class="form-label">First Name</label>
-                                    <input type="text" id="first_name" name="first_name" class="form-control"
-                                        value="{{ old('first_name', $dataPelanggan->first_name) }}" required>
+                                    <label for="first_name" class="form-label">First name</label>
+                                    <input type="text" id="first_name" name="first_name" class="form-control" required>
                                 </div>
 
+                                <!-- Last Name -->
                                 <div class="mb-3">
-                                    <label for="last_name" class="form-label">Last Name</label>
-                                    <input type="text" id="last_name" name="last_name" class="form-control"
-                                        value="{{ old('last_name', $dataPelanggan->last_name) }}" required>
+                                    <label for="last_name" class="form-label">Last name</label>
+                                    <input type="text" id="last_name" name="last_name" class="form-control" required>
                                 </div>
                             </div>
 
                             <div class="col-lg-4 col-sm-6">
+                                <!-- Birthday -->
                                 <div class="mb-3">
                                     <label for="birthday" class="form-label">Birthday</label>
-                                    <input type="date" id="birthday" name="birthday" class="form-control"
-                                        value="{{ old('birthday', $dataPelanggan->birthday) }}">
+                                    <input type="date" id="birthday" name="birthday" class="form-control">
                                 </div>
 
+                                <!-- Gender -->
                                 <div class="mb-3">
                                     <label for="gender" class="form-label">Gender</label>
                                     <select id="gender" name="gender" class="form-select">
                                         <option value="">-- Pilih --</option>
-                                        <option value="Male" {{ old('gender', $dataPelanggan->gender) == 'Male' ? 'selected' : '' }}>Male</option>
-                                        <option value="Female" {{ old('gender', $dataPelanggan->gender) == 'Female' ? 'selected' : '' }}>Female</option>
-                                        <option value="Other" {{ old('gender', $dataPelanggan->gender) == 'Other' ? 'selected' : '' }}>Other</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="col-lg-4 col-sm-12">
+                                <!-- Email -->
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>
-                                    <input type="email" id="email" name="email" class="form-control"
-                                        value="{{ old('email', $dataPelanggan->email) }}" required>
+                                    <input type="text" id="email" name="email" class="form-control" required>
                                 </div>
 
+                                <!-- Phone -->
                                 <div class="mb-3">
                                     <label for="phone" class="form-label">Phone</label>
-                                    <input type="text" id="phone" name="phone" class="form-control"
-                                        value="{{ old('phone', $dataPelanggan->phone) }}" required>
+                                    <input type="text" id="phone" name="phone" class="form-control">
                                 </div>
 
-                                <div class="mt-4">
-                                    <button type="submit" class="btn btn-info text-white">
-                                        <i class="fas fa-save me-1"></i> Simpan Perubahan
-                                    </button>
-                                    <a href="{{ route('pelanggan.index') }}" class="btn btn-outline-secondary ms-2">
-                                        Batal
-                                    </a>
+                                <!-- Buttons -->
+                                <div class="">
+                                    <button type="submit" class="btn btn-info">Simpan Perubahan</button>
+                                    <a href="{{ route('pelanggan.index') }}"
+                                        class="btn btn-outline-secondary ms-2">Batal</a>
                                 </div>
                             </div>
                         </div>
                     </form>
-                </div> <!-- end card-body -->
-            </div> <!-- end card -->
-        </div> <!-- end col -->
-    </div> <!-- end row -->
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
