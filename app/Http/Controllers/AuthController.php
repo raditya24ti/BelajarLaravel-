@@ -3,46 +3,39 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // Function untuk menampilkan halaman login
-    public function index()
+    // 👇 Tambahkan method ini
+    public function showLoginForm()
     {
-        return view('login');
+        return view('auth.login');
     }
 
-    // Function untuk memproses data login
     public function login(Request $request)
     {
-        // Validasi input
-        $request->validate([
-            'username' => 'required',
-            'password' => 'required'
-        ], [
-            'username.required' => 'Username wajib diisi.',
-            'password.required' => 'Password wajib diisi.'
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
         ]);
 
-        $username = $request->username;
-        $password = $request->password;
-
-        // Cek panjang dan huruf kapital di password
-        if (strlen($password) < 3 || !preg_match('/[A-Z]/', $password)) {
-            return back()->with('error', 'Password harus minimal 3 karakter dan mengandung huruf kapital.');
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('/dashboard');
         }
 
-        // Contoh user dummy (bisa kamu ganti)
-        $userDB = [
-            'username' => 'Dapoii',
-            'password' => 'Admin123'
-        ];
+        return back()->withErrors([
+            'email' => 'Email atau password salah.',
+        ])->onlyInput('email');
+    }
 
-        // Cek kesamaan username & password
-        if ($username === $userDB['username'] && $password === $userDB['password']) {
-            return view('welcome-page', ['username' => $username]);
-        } else {
-            return back()->with('error', 'Username atau password salah.');
-        }
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
     }
 }
