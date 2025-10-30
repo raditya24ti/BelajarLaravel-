@@ -1,48 +1,42 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    // Function untuk menampilkan halaman login
+
+
     public function index()
     {
-        return view('login');
+        return view('login-form');
     }
 
-    // Function untuk memproses data login
+
     public function login(Request $request)
     {
-        // Validasi input
         $request->validate([
-            'username' => 'required',
+            'email' => 'required',
             'password' => 'required'
-        ], [
-            'username.required' => 'Username wajib diisi.',
-            'password.required' => 'Password wajib diisi.'
         ]);
 
-        $username = $request->username;
-        $password = $request->password;
+        $user = User::where('email', $request->email)->first();
 
-        // Cek panjang dan huruf kapital di password
-        if (strlen($password) < 3 || !preg_match('/[A-Z]/', $password)) {
-            return back()->with('error', 'Password harus minimal 3 karakter dan mengandung huruf kapital.');
+        if (!$user) {
+            return back()->with('error', 'Email tidak ditemukan.');
         }
 
-        // Contoh user dummy (bisa kamu ganti)
-        $userDB = [
-            'username' => 'Dapoii',
-            'password' => 'Admin123'
-        ];
-
-        // Cek kesamaan username & password
-        if ($username === $userDB['username'] && $password === $userDB['password']) {
-            return view('welcome-page', ['username' => $username]);
-        } else {
-            return back()->with('error', 'Username atau password salah.');
+        // jika password salah
+        if (!Hash::check($request->password, $user->password)) {
+            return back()->with('error', 'Password salah.');
         }
+
+        // jika berhasil login
+        // (biasanya set session dulu)
+        session(['user_id' => $user->id]);
+
+        return redirect()->route('dashboard');
     }
 }
