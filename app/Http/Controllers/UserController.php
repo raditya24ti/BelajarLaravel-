@@ -12,8 +12,8 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $data['datauser'] = user::all();
+    {   
+        $data['dataUser'] = user::all();
         return view('admin.user.index', $data);
     }
 

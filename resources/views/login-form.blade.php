@@ -16,16 +16,9 @@
 <body>
 <div class="container">
     <h2>Form Login</h2>
-
-
-
-
     @if(session('error'))
         <div class="alert">{{ session('error') }}</div>
     @endif
-
-
-
 
     @if($errors->any())
         <div class="alert">
@@ -37,22 +30,14 @@
         </div>
     @endif
 
-
-
-
     <form action="{{ url('/auth/login') }}" method="POST">
         @csrf
         <label>Email:</label>
         <input type="text" name="email" value="{{ old('email') }}" placeholder="Masukkan email">
 
 
-
-
         <label>Password:</label>
         <input type="password" name="password" placeholder="Masukkan password">
-
-
-
 
         <button type="submit">Login</button>
     </form>
