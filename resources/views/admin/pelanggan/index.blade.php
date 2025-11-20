@@ -79,7 +79,7 @@
                     <table id="table-pelanggan" class="table table-centered table-nowrap mb-0 rounded">
                         <thead class="thead-light">
                             <tr>
-                                <th class="border-0">No  </th>
+                                <th class="border-0">Nomor  </th>
                                 <th class="border-0">FirstName</th>
                                 <th class="border-0">LastName</th>
                                 <th class="border-0">Birthday</th>
