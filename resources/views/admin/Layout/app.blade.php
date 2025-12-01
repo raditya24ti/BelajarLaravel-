@@ -21,7 +21,7 @@
     <meta name="theme-color" content="#ffffff">
 
     {{-- CSS --}}
-    @include('admin.layout.css')
+    @include('admin.Layout.css')
 
 </head>
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MultipleuploadsController;
 
 Route::get('/pcr', function () {
     return 'Selamat Datang di Website Kampus PCR!';
@@ -64,3 +65,13 @@ Route::get('/auth', function () {
 });
 Route::get('/auth', [AuthController::class, 'index']);
 Route::post('/auth/login', [AuthController::class, 'login']);
+
+Route::get('/', function () {
+    return view('welcome');
+})->name('welcome');
+
+// Route::get('/multipleuploads', 'MultipleuploadsController@index')->name('uploads');
+// Route::post('/save','MultipleuploadsController@store')->name('uploads.store');
+
+Route::get('/multipleuploads', [MultipleuploadsController::class, 'index'])->name('uploads');
+Route::post('/save', [MultipleuploadsController::class, 'store'])->name('uploads.store');
