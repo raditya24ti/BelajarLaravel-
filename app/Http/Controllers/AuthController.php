@@ -1,46 +1,42 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Hash;
+
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-
-
     public function index()
     {
-        return view('login-form');
+        return view('auth.login');
     }
-
 
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required',
-            'password' => 'required'
+        $input = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)->first();
-
-        if (!$user) {
-            return back()->with('error', 'Email tidak ditemukan.');
+        if (Auth::attempt($input)) {
+            $request->session()->regenerate();
+            return redirect()->intended('/dashboard'); // Arahkan User Biasa
         }
 
-        // jika password salah
-        if (!Hash::check($request->password, $user->password)) {
-            return back()->with('error', 'Password salah.');
-        }
+        // Jika Login Gagal
+        return back()->withErrors([
+            'email' => 'Email atau password salah.',
+        ]);
+    }
 
-        // jika berhasil login
-        // (biasanya set session dulu)
-        session(['user_id' => $user->id]);
-
-        return redirect()->route('dashboard');
+    // 3. Proses Logout
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
     }
 }
-
-
-
-
