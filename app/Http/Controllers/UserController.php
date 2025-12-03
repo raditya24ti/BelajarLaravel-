@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\user;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
+use App\Models\Role;
+use Illuminate\Support\Facades\Storage; 
+
 
 class UserController extends Controller
 {
@@ -13,18 +17,17 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data['dataUser'] = user::all();
+        $data['dataUser'] = User::all();
         return view('admin.user.index', $data);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-
-    public function create()
+public function create()
     {
-        return view('admin.user.create');
-        $data['password'] = Hash::make($request->password);
+        $roles = Role::all();
+        return view('admin.user.create', compact('roles'));
     }
 
     /**
@@ -32,14 +35,31 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
+        // Validasi input
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|string|min:7',
+            'role' => 'required', // Wajib pilih role
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Validasi foto
+        ]);
 
-        $data['name'] = $request->name;
-        $data['email'] = $request->email;
-        $data['password'] = $request->password;
+        // 1. Hash Password
+        $validatedData['password'] = Hash::make($validatedData['password']);
 
-        user::create($data);
+        // 2. Upload Foto (Jika ada)
+        if ($request->hasFile('avatar')) {
+            // Simpan ke folder 'public/avatars'
+            $validatedData['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        }
 
+        // 3. Simpan User
+        $user = User::create($validatedData);
+
+        // 4. Pasang Role ke User
+        $user->assignRole($request->role);
+
+        // Redirect ke user.index (sesuai route baru)
         return redirect()->route('user.index')->with('success', 'Penambahan Data Berhasil!');
     }
 
@@ -56,7 +76,8 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $data['datauser'] = user::findOrFail($id);
+        $data['dataUser'] = User::findOrFail($id);
+        $data['roles'] = Role::all(); // Kirim data role juga ke form edit
         return view('admin.user.edit', $data);
     }
 
@@ -65,20 +86,58 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $user_id = $id;
-        $user = user::findOrFail($user_id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = $request->password;
-        $user->save();
+        $user = User::findOrFail($id);
+
+        // Validasi input
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => [
+                'required', 'email', 'max:255',
+                Rule::unique('users')->ignore($user->id),
+            ],
+            'password' => 'nullable|string|min:7',
+            'role' => 'required', // Role wajib dipilih saat edit
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        // 1. Cek Password (Update hanya jika diisi)
+        if ($request->filled('password')) {
+            $validatedData['password'] = Hash::make($validatedData['password']);
+        } else {
+            unset($validatedData['password']); // Jangan update password jika kosong
+        }
+
+        // 2. Cek Upload Foto Baru
+        if ($request->hasFile('avatar')) {
+            // Hapus foto lama jika ada
+            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+                Storage::disk('public')->delete($user->avatar);
+            }
+            // Simpan foto baru
+            $validatedData['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        }
+
+        // 3. Update Data User
+        $user->update($validatedData);
+
+        // 4. Update Role (Sync mengganti role lama dengan yang baru)
+        $user->syncRoles($request->role);
+
         return redirect()->route('user.index')->with('success', 'Perubahan Data Berhasil!');
     }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        $user =  user::findOrFail($id);
+        $user = User::findOrFail($id);
+
+        // Hapus foto profilnya juga agar hemat penyimpanan
+        if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+            Storage::disk('public')->delete($user->avatar);
+        }
+
         $user->delete();
         return redirect()->route('user.index')->with('success', 'Data berhasil dihapus');
     }
