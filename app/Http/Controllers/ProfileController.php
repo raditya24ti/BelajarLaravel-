@@ -9,14 +9,51 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
- // Show the edit profile form
-    public function edit()
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+         return view('profile');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $user = Auth::user();
+        return view('profile.show', compact('user'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
         return view('profile.edit');
     }
 
-    // Update the user's profile picture
-    public function update(Request $request)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
     {
         $request->validate([
             'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -30,22 +67,17 @@ class ProfileController extends Controller
         }
 
         // Store the new profile picture
-        $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+        $path                  = $request->file('profile_picture')->store('profile_pictures', 'public');
         $user->profile_picture = $path;
         $user->save();
 
         return redirect()->route('profile.edit')->with('success', 'Profile picture updated successfully!');
     }
 
-    // Show the user's profile
-    public function show()
-    {
-        $user = Auth::user();
-        return view('profile.show', compact('user'));
-    }
-
-    // Delete the user's profile picture
-    public function destroy()
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
     {
         $user = Auth::user();
 
@@ -53,7 +85,6 @@ class ProfileController extends Controller
             Storage::disk('public')->delete($user->profile_picture);
             $user->profile_picture = null;
             $user->save();
-            
         }
 
         return redirect()->route('profile.edit')->with('success', 'Profile picture deleted successfully!');

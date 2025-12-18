@@ -16,3 +16,12 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();
+
+    -&gt;withMiddleware(function (Middleware $middleware): void {
+        $middleware-&gt;alias([
+            &#39;role&#39; =&gt; \Spatie\Permission\Middleware\RoleMiddleware::class,
+            &#39;permission&#39; =&gt; \Spatie\Permission\Middleware\PermissionMiddleware::class,
+            &#39;role_or_permission&#39; =&gt;
+\Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+        ]);
+    })

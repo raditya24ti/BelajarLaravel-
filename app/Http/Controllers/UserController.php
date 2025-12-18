@@ -6,9 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-use App\Models\Role;
+use Spatie\Permission\Models\Role; 
 use Illuminate\Support\Facades\Storage; 
-
 
 class UserController extends Controller
 {
@@ -24,10 +23,13 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-public function create()
+    public function create()
     {
-        $roles = Role::all();
-        return view('admin.user.create', compact('roles'));
+        // Ambil data Role untuk dropdown
+        $data['rules'] = Role::all();
+        return view('admin.user.create', $data);
+        
+
     }
 
     /**

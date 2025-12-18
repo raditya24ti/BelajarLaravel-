@@ -12,8 +12,7 @@ class CreatePelangganDummy extends Seeder
     /**
      * Run the database seeds.
      */
-
-   public function run(){
+    public function run(){
     $faker = \Faker\Factory::create();
 
     foreach (range(1, 100) as $index) {
@@ -26,4 +25,5 @@ class CreatePelangganDummy extends Seeder
             'phone'      => $faker->phoneNumber,
         ]);
     }
-}}
+}
+}
